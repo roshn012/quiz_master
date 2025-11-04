@@ -1,0 +1,106 @@
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null); // null = not logged in
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Verify token and load user
+      axios.get('http://localhost:5000/user/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => {
+          // Use actual role from backend response
+          setUser({
+            id: res.data._id || res.data.id,
+            name: res.data.name,
+            email: res.data.email,
+            role: res.data.role || 'user' // Get actual role from backend
+          });
+        })
+        .catch(() => {
+          localStorage.removeItem('token');
+          setUser(null);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const login = (userData) => {
+    // Preserve the role from login response
+    setUser({
+      ...userData,
+      role: userData.role || 'user'
+    });
+  };
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
+  const resetPassword = async (email) => {
+    try {
+      const response = await fetch('http://localhost:5000/user/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Failed to send OTP');
+      return data;
+    } catch (error) {
+      throw new Error(error.message || 'Failed to send OTP');
+    }
+  };
+
+  const verifyOtp = async (email, otp) => {
+    try {
+      const response = await fetch('http://localhost:5000/user/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, otp }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Invalid OTP');
+      return data;
+    } catch (error) {
+      throw new Error(error.message || 'Invalid OTP');
+    }
+  };
+
+  const updatePassword = async (email, otp, newPassword) => {
+    try {
+      const response = await fetch('http://localhost:5000/user/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, otp, newPassword }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Failed to update password');
+      return data;
+    } catch (error) {
+      throw new Error(error.message || 'Failed to update password');
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, loading, login, logout, resetPassword, verifyOtp, updatePassword }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);

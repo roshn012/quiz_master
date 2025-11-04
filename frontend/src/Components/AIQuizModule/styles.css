@@ -1,0 +1,252 @@
+/* Scoped styles for AI Quiz Module - using class selector to avoid global conflicts */
+.ai-quiz-module {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+.ai-quiz-module * {
+  box-sizing: border-box;
+}
+
+.ai-quiz-module .start-screen {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 3rem 2rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ai-quiz-module .start-screen h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.ai-quiz-module .start-screen input,
+.ai-quiz-module .start-screen select {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.875rem 1rem;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: white;
+  transition: all 0.2s;
+}
+
+.ai-quiz-module .start-screen input:focus,
+.ai-quiz-module .start-screen select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.ai-quiz-module .start-screen .start-btn {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.875rem 1.5rem;
+  margin-top: 1rem;
+  background: linear-gradient(to right, #4f46e5, #6366f1);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ai-quiz-module .start-screen .start-btn:hover:not(:disabled) {
+  background: linear-gradient(to right, #4338ca, #5b21b6);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.ai-quiz-module .start-screen .start-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ai-quiz-module .start-screen .error {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: block;
+  text-align: center;
+}
+
+/* Quiz Component Styles */
+.ai-quiz-module .quiz {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ai-quiz-module .quiz .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.ai-quiz-module .quiz .header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.ai-quiz-module .quiz .header p {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.ai-quiz-module .quiz progress {
+  width: 100%;
+  height: 12px;
+  border-radius: 9999px;
+  background-color: #f1f5f9;
+  border: none;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.ai-quiz-module .quiz progress::-webkit-progress-bar {
+  background-color: #f1f5f9;
+  border-radius: 9999px;
+}
+
+.ai-quiz-module .quiz progress::-webkit-progress-value {
+  background: linear-gradient(to right, #4f46e5, #6366f1);
+  border-radius: 9999px;
+}
+
+.ai-quiz-module .quiz progress::-moz-progress-bar {
+  background: linear-gradient(to right, #4f46e5, #6366f1);
+  border-radius: 9999px;
+}
+
+.ai-quiz-module .quiz .question {
+  margin-bottom: 2rem;
+}
+
+.ai-quiz-module .quiz .question h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.ai-quiz-module .quiz .answers {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ai-quiz-module .quiz .answers .answer {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: #f8fafc;
+  color: #1e293b;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.ai-quiz-module .quiz .answers .answer:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateX(4px);
+}
+
+.ai-quiz-module .quiz .answers .answer.active {
+  background: linear-gradient(to right, #4f46e5, #6366f1);
+  color: white;
+  border-color: #4f46e5;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+}
+
+.ai-quiz-module .quiz button:not(.answer) {
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(to right, #4f46e5, #6366f1);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ai-quiz-module .quiz button:not(.answer):hover {
+  background: linear-gradient(to right, #4338ca, #5b21b6);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Loader Styles */
+.ai-quiz-module .loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.ai-quiz-module .loader > div {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background:
+    radial-gradient(farthest-side, #4f46e5 94%, transparent) top/8px 8px no-repeat,
+    conic-gradient(transparent 30%, #4f46e5);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 0);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* Result Screen - Already uses Tailwind, but ensure proper scoping */
+.ai-quiz-module .result-screen {
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ai-quiz-module .start-screen,
+  .ai-quiz-module .quiz {
+    padding: 2rem 1.5rem;
+  }
+
+  .ai-quiz-module .quiz .question h3 {
+    font-size: 1.25rem;
+  }
+
+  .ai-quiz-module .quiz .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

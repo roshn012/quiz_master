@@ -1,0 +1,3 @@
+- Update Profile.jsx: Change user.username to user.name, replace '?' with User icon avatar ✓
+- Update Navbar.jsx: Change user.username to user.name, replace '?' with User icon avatar ✓
+- Test the changes by running the frontend ✓
