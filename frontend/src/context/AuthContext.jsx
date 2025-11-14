@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 const AuthContext = createContext();
 
@@ -10,17 +10,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      // Verify token and load user
-      axios.get('http://localhost:5000/user/profile', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      axiosInstance.get('/user/profile')
         .then(res => {
-          // Use actual role from backend response
           setUser({
             id: res.data._id || res.data.id,
             name: res.data.name,
             email: res.data.email,
-            role: res.data.role || 'user' // Get actual role from backend
+            role: res.data.role || 'user'
           });
         })
         .catch(() => {
@@ -34,7 +30,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData) => {
-    // Preserve the role from login response
     setUser({
       ...userData,
       role: userData.role || 'user'

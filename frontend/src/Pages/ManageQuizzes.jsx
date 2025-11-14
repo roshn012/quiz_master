@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import toast from "react-hot-toast";
+import axiosInstance from "../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Edit, Trash2, Plus, ArrowLeft } from "lucide-react";
+import ConfirmModal from "../Components/ConfirmModal";
 
 const ManageQuizzes = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [confirmState, setConfirmState] = useState({ isOpen: false, targetId: null, message: '' });
 
   useEffect(() => {
-    // Redirect if not admin
     if (!authLoading && user && user.role !== "admin") {
       navigate("/quizzes");
       return;
@@ -24,10 +26,7 @@ const ManageQuizzes = () => {
 
   const fetchQuizzes = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/quizzes", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axiosInstance.get("/quizzes");
       setQuizzes(response.data);
     } catch (error) {
       console.error("Error fetching quizzes:", error);
@@ -36,21 +35,20 @@ const ManageQuizzes = () => {
     }
   };
 
-  const handleDelete = async (quizId) => {
-    if (!window.confirm("Are you sure you want to delete this quiz? This action cannot be undone.")) {
-      return;
-    }
+  const handleDelete = (quizId) => {
+    setConfirmState({ isOpen: true, targetId: quizId, message: 'This action cannot be undone.' });
+  };
 
+  const performDelete = async (quizId) => {
     try {
-      const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/quizzes/${quizId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      alert("Quiz deleted successfully!");
+      await axiosInstance.delete(`/quizzes/${quizId}`);
+      toast.success("Quiz deleted successfully!");
       fetchQuizzes();
     } catch (error) {
       console.error("Error deleting quiz:", error);
-      alert("Failed to delete quiz");
+      toast.error("Failed to delete quiz");
+    } finally {
+      setConfirmState({ isOpen: false, targetId: null, message: '' });
     }
   };
 
@@ -147,6 +145,15 @@ const ManageQuizzes = () => {
           )}
         </div>
       </div>
+      <ConfirmModal
+        isOpen={confirmState.isOpen}
+        title="Delete Quiz"
+        message={confirmState.message || 'Are you sure you want to delete this quiz?'}
+        onCancel={() => setConfirmState({ isOpen: false, targetId: null, message: '' })}
+        onConfirm={() => performDelete(confirmState.targetId)}
+        confirmText="Delete"
+        blur={true}
+      />
     </div>
   );
 };

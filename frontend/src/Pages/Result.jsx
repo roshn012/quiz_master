@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import Footer from "../Components/Footer";
 
 const Result = () => {
   const location = useLocation();
@@ -16,15 +17,7 @@ const Result = () => {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
       {/* Header */}
-      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between px-6 sm:px-10 py-6 border-b bg-white shadow-sm">
-        <h1 className="text-2xl font-bold text-indigo-700 mb-4 sm:mb-0">QuizMaster</h1>
-
-        <nav className="flex flex-wrap items-center justify-center gap-4 text-gray-600 font-medium">
-          <a href="/" className="hover:text-indigo-700 transition">Home</a>
-          <a href="/quizzes" className="hover:text-indigo-700 transition">Quizzes</a>
-          <a href="/leaderboard" className="hover:text-indigo-700 transition">Leaderboard</a>
-        </nav>
-      </header>
+      
 
       {/* Main Content */}
       <main className="max-w-5xl mx-auto p-6 sm:p-8">
@@ -87,6 +80,7 @@ const Result = () => {
                 <tr>
                   <th className="px-6 py-3">Question</th>
                   <th className="px-6 py-3">Your Answer</th>
+                  <th className="px-6 py-3">Correct Answer</th>
                   <th className="px-6 py-3">Result</th>
                 </tr>
               </thead>
@@ -98,6 +92,7 @@ const Result = () => {
                   >
                     <td className="px-6 py-4 text-gray-800">{item.question}</td>
                     <td className="px-6 py-4">{item.answer}</td>
+                    <td className="px-6 py-4 text-gray-700">{item.correctAnswer || "-"}</td>
                     <td className="px-6 py-4">
                       {item.isCorrect ? (
                         <span className="text-green-600 font-semibold bg-green-50 px-3 py-1 rounded-full">
@@ -116,6 +111,7 @@ const Result = () => {
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 };
